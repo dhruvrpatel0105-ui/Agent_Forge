@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentForge - Master Agentic AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0C0A08; color: #FAF6EF; font-family: 'Inter', sans-serif; }
+
+  /* NAVBAR */
+  nav {
+    background: #1A1612;
+    padding: 0 64px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: #E8520A; text-decoration: none; }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { color: #FAF6EF; text-decoration: none; font-size: 15px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: #E8520A; }
+  .btn-primary { background: #E8520A; color: #FAF6EF; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; text-decoration: none; }
+  .btn-primary:hover { opacity: 0.9; }
+
+  /* HERO */
+  .hero {
+    min-height: calc(100vh - 72px);
+    padding: 80px 64px;
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    gap: 60px;
+    align-items: center;
+  }
+  .hero-tag { color: #E8520A; font-size: 14px; font-weight: 500; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .hero-tag::before { content: ''; display: inline-block; width: 8px; height: 8px; background: #E8520A; border-radius: 50%; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: 56px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; }
+  .hero h1 span { color: #E8520A; }
+  .hero-sub { color: #8A7D6B; font-size: 18px; line-height: 1.7; margin-bottom: 40px; max-width: 560px; }
+  .hero-buttons { display: flex; gap: 16px; margin-bottom: 56px; }
+  .btn-secondary { background: transparent; color: #FAF6EF; border: 1px solid #FAF6EF; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; text-decoration: none; }
+  .btn-secondary:hover { background: #FAF6EF; color: #0C0A08; }
+  .btn-primary-lg { background: #E8520A; color: #FAF6EF; border: none; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; text-decoration: none; display: inline-block; }
+  .btn-primary-lg:hover { opacity: 0.9; }
+
+  /* STATS */
+  .stats { display: flex; gap: 48px; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; color: #F7C948; }
+  .stat-label { font-size: 13px; color: #8A7D6B; margin-top: 4px; }
+
+  /* COURSE CARD */
+  .course-card {
+    background: #1A1612;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #2A2218;
+  }
+  .card-preview {
+    background: #2A2218;
+    border-radius: 8px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #8A7D6B;
+    font-size: 14px;
+    gap: 8px;
+  }
+  .play-icon { width: 40px; height: 40px; background: #E8520A; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .card-meta { color: #8A7D6B; font-size: 13px; margin-bottom: 16px; }
+  .card-price { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: #F7C948; }
+  .card-price-label { font-size: 12px; color: #8A7D6B; margin-left: 8px; }
+  .card-price-row { display: flex; align-items: baseline; margin-bottom: 20px; }
+  .card-enroll { width: 100%; background: #E8520A; color: #FAF6EF; border: none; padding: 14px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity 0.2s; }
+  .card-enroll:hover { opacity: 0.9; }
+
+  /* COURSE CARDS SECTION */
+  .section { padding: 80px 64px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+  .section-sub { color: #8A7D6B; font-size: 16px; margin-bottom: 48px; }
+  .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .mini-card { background: #1A1612; border-radius: 12px; padding: 24px; border: 1px solid #2A2218; transition: border-color 0.2s; }
+  .mini-card:hover { border-color: #E8520A; }
+  .mini-card-tag { background: #E8520A22; color: #E8520A; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+  .mini-card-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .mini-card-desc { color: #8A7D6B; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+  .mini-card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .mini-card-price { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: #F7C948; }
+  .mini-card-btn { background: transparent; color: #E8520A; border: 1px solid #E8520A; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; }
+  .mini-card-btn:hover { background: #E8520A; color: #FAF6EF; }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 80px 64px; background: #0C0A08; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+  .testimonial-card { background: #1A1612; border-radius: 12px; padding: 24px; border: 1px solid #2A2218; }
+  .stars { color: #F7C948; font-size: 16px; margin-bottom: 12px; }
+  .testimonial-text { color: #8A7D6B; font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; }
+  .author-avatar { width: 36px; height: 36px; background: #E8520A; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #FAF6EF; }
+  .author-name { font-size: 14px; font-weight: 600; }
+  .author-role { font-size: 12px; color: #8A7D6B; }
+
+  /* SLIDER CONTROLS */
+  .slider-controls { display: flex; justify-content: center; gap: 8px; margin-top: 32px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #2A2218; cursor: pointer; transition: background 0.2s; }
+  .dot.active { background: #E8520A; width: 24px; border-radius: 4px; }
+
+  /* FEE CALCULATOR */
+  .calculator { padding: 80px 64px; }
+  .calc-box { background: #1A1612; border-radius: 16px; padding: 48px; max-width: 680px; margin: 0 auto; border: 1px solid #2A2218; }
+  .calc-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; text-align: center; }
+  .calc-sub { color: #8A7D6B; font-size: 15px; text-align: center; margin-bottom: 40px; }
+  .calc-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .calc-label { font-size: 15px; color: #FAF6EF; }
+  .calc-select { background: #0C0A08; color: #FAF6EF; border: 1px solid #2A2218; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; cursor: pointer; }
+  .calc-select:focus { outline: none; border-color: #E8520A; }
+  .discount-input { background: #0C0A08; color: #FAF6EF; border: 1px solid #2A2218; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; width: 160px; }
+  .discount-input:focus { outline: none; border-color: #E8520A; }
+  .calc-divider { border: none; border-top: 1px solid #2A2218; margin: 24px 0; }
+  .calc-total-label { font-size: 18px; font-weight: 600; }
+  .calc-total-price { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 700; color: #F7C948; }
+  .calc-btn { width: 100%; background: #E8520A; color: #FAF6EF; border: none; padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: 24px; transition: opacity 0.2s; }
+  .calc-btn:hover { opacity: 0.9; }
+  .calc-savings { background: #E8520A22; border: 1px solid #E8520A44; border-radius: 8px; padding: 12px 16px; margin-top: 16px; text-align: center; color: #E8520A; font-size: 14px; font-weight: 500; display: none; }
+
+  /* FOOTER */
+  footer { background: #1A1612; padding: 40px 64px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #2A2218; }
+  .footer-logo { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: #E8520A; }
+  .footer-text { color: #8A7D6B; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="logo">AgentForge</a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Course Details</a></li>
+    <li><a href="#">Syllabus</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="btn-primary">Enroll Now</a>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">The Future of AI is Autonomous</div>
+    <h1>Master <span>Agentic AI</span> —<br>Before Everyone<br>Else Does.</h1>
+    <p class="hero-sub">From prompts to autonomous agents — a hands-on course for the next generation of AI builders.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary-lg">Enroll Now →</a>
+      <a href="#" class="btn-secondary">View Syllabus</a>
+    </div>
+    <div class="stats">
+      <div>
+        <div class="stat-num">1,200+</div>
+        <div class="stat-label">Students Enrolled</div>
+      </div>
+      <div>
+        <div class="stat-num">4.9 ⭐</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div>
+        <div class="stat-num">12 Weeks</div>
+        <div class="stat-label">Structured Learning</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="course-card">
+    <div class="card-preview">
+      <div class="play-icon">▶</div>
+      Course Preview
+    </div>
+    <div class="card-title">Agentic AI Masterclass</div>
+    <div class="card-meta">12 Modules · 48 Lessons · Hands-on Projects</div>
+    <div class="card-price-row">
+      <span class="card-price">₹4,999</span>
+      <span class="card-price-label">Early Bird Price</span>
+    </div>
+    <button class="card-enroll">Enroll Now — Limited Seats</button>
+  </div>
+</section>
+
+<!-- AVAILABLE COURSES SECTION -->
+<section class="section">
+  <div class="section-title">Also Available</div>
+  <div class="section-sub">Explore our full AI learning ecosystem</div>
+  <div class="cards-grid">
+    <div class="mini-card">
+      <span class="mini-card-tag">Trending</span>
+      <div class="mini-card-title">Agentic AI Masterclass</div>
+      <div class="mini-card-desc">Build autonomous AI agents that think, act, and deliver results without human intervention.</div>
+      <div class="mini-card-footer">
+        <span class="mini-card-price">₹4,999</span>
+        <button class="mini-card-btn">Enroll Now</button>
+      </div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-card-tag">Popular</span>
+      <div class="mini-card-title">Generative AI Fundamentals</div>
+      <div class="mini-card-desc">Master prompt engineering, LLMs, and generative models from ground up.</div>
+      <div class="mini-card-footer">
+        <span class="mini-card-price">₹3,499</span>
+        <button class="mini-card-btn">Enroll Now</button>
+      </div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-card-tag">Beginner</span>
+      <div class="mini-card-title">Machine Learning A-Z</div>
+      <div class="mini-card-desc">Start your AI journey with supervised, unsupervised, and reinforcement learning.</div>
+      <div class="mini-card-footer">
+        <span class="mini-card-price">₹2,999</span>
+        <button class="mini-card-btn">Enroll Now</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS SLIDER -->
+<section class="testimonials">
+  <div class="section-title">What Our Students Say</div>
+  <div class="section-sub">Real results from real learners</div>
+  <div class="testimonials-grid" id="testimonials-container">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"This course completely changed how I think about AI. Building my first autonomous agent was mind-blowing. Highly recommended!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RK</div>
+        <div>
+          <div class="author-name">Rahul Kumar</div>
+          <div class="author-role">Software Engineer, Bangalore</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"As a working professional, the structured 12-week format was perfect. I could learn at my own pace without compromising my job."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">PS</div>
+        <div>
+          <div class="author-name">Priya Sharma</div>
+          <div class="author-role">Data Analyst, Mumbai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"The hands-on projects made all the difference. I deployed my first AI agent to production within 3 weeks of starting the course!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AM</div>
+        <div>
+          <div class="author-name">Aryan Mehta</div>
+          <div class="author-role">CS Student, Ahmedabad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slider-controls">
+    <div class="dot active" onclick="showSlide(0)"></div>
+    <div class="dot" onclick="showSlide(1)"></div>
+    <div class="dot" onclick="showSlide(2)"></div>
+  </div>
+</section>
+
+<!-- FEE CALCULATOR -->
+<section class="calculator">
+  <div class="calc-box">
+    <div class="calc-title">Fee Calculator</div>
+    <div class="calc-sub">Find the best price for your learning journey</div>
+    <div class="calc-row">
+      <span class="calc-label">Select Course</span>
+      <select class="calc-select" id="course-select" onchange="calculateFee()">
+        <option value="4999">Agentic AI Masterclass — ₹4,999</option>
+        <option value="3499">Generative AI Fundamentals — ₹3,499</option>
+        <option value="2999">Machine Learning A-Z — ₹2,999</option>
+      </select>
+    </div>
+    <div class="calc-row">
+      <span class="calc-label">Discount Code</span>
+      <input type="text" class="discount-input" id="discount-input" placeholder="e.g. AGENT20" oninput="calculateFee()">
+    </div>
+    <hr class="calc-divider">
+    <div class="calc-row">
+      <span class="calc-total-label">Total Payable</span>
+      <span class="calc-total-price" id="total-price">₹4,999</span>
+    </div>
+    <div class="calc-savings" id="savings-msg"></div>
+    <button class="calc-btn" onclick="applyDiscount()">Apply Discount & Enroll</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AgentForge</div>
+  <div class="footer-text">© 2026 AgentForge. All rights reserved.</div>
+</footer>
+
+<script>
+  const discountCodes = {
+    'AGENT20': 20,
+    'STUDENT15': 15,
+    'LAUNCH10': 10,
+    'FORGE25': 25
+  };
+
+  function calculateFee() {
+    const base = parseInt(document.getElementById('course-select').value);
+    const code = document.getElementById('discount-input').value.toUpperCase().trim();
+    const discount = discountCodes[code] || 0;
+    const final = Math.round(base - (base * discount / 100));
+    document.getElementById('total-price').textContent = '₹' + final.toLocaleString('en-IN');
+    const savingsMsg = document.getElementById('savings-msg');
+    if (discount > 0) {
+      const saved = base - final;
+      savingsMsg.style.display = 'block';
+      savingsMsg.textContent = '🎉 You save ₹' + saved.toLocaleString('en-IN') + ' (' + discount + '% off applied!)';
+    } else {
+      savingsMsg.style.display = 'none';
+    }
+  }
+
+  function applyDiscount() {
+    const code = document.getElementById('discount-input').value.toUpperCase().trim();
+    const discount = discountCodes[code] || 0;
+    if (discount > 0) {
+      alert('Discount applied! Redirecting to enrollment...');
+    } else if (code === '') {
+      alert('Enrolling at full price. Welcome to AgentForge!');
+    } else {
+      alert('Invalid discount code. Try: AGENT20, STUDENT15, LAUNCH10, or FORGE25');
+    }
+  }
+
+  let currentSlide = 0;
+  const testimonials = [
+    { initials: 'RK', name: 'Rahul Kumar', role: 'Software Engineer, Bangalore', text: '"This course completely changed how I think about AI. Building my first autonomous agent was mind-blowing. Highly recommended!"' },
+    { initials: 'PS', name: 'Priya Sharma', role: 'Data Analyst, Mumbai', text: '"As a working professional, the structured 12-week format was perfect. I could learn at my own pace without compromising my job."' },
+    { initials: 'AM', name: 'Aryan Mehta', role: 'CS Student, Ahmedabad', text: '"The hands-on projects made all the difference. I deployed my first AI agent to production within 3 weeks of starting the course!"' },
+    { initials: 'SJ', name: 'Sneha Joshi', role: 'AI Researcher, Pune', text: '"The depth of content on agentic systems is unmatched. This is the only course I found that goes beyond theory into real deployment."' },
+    { initials: 'VP', name: 'Vikram Patel', role: 'Product Manager, Delhi', text: '"Even as a non-engineer, I was able to follow along and build my own AI workflows. The instructors are incredibly supportive."' },
+  ];
+
+  function showSlide(index) {
+    currentSlide = index;
+    const container = document.getElementById('testimonials-container');
+    const dots = document.querySelectorAll('.dot');
+    const t = testimonials[index];
+    const next = testimonials[(index + 1) % testimonials.length];
+    const prev = testimonials[(index + 2) % testimonials.length];
+    const cards = [t, next, prev];
+    container.innerHTML = cards.map(c => `
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">${c.text}</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">${c.initials}</div>
+          <div>
+            <div class="author-name">${c.name}</div>
+            <div class="author-role">${c.role}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  }
+
+  setInterval(() => showSlide((currentSlide + 1) % 3), 4000);
+</script>
+</body>
+</html>
