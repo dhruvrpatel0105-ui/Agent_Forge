@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentForge - Syllabus</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.syllabus-header { padding: 64px 64px 40px; background: #1A1612; border-bottom: 1px solid #2A2218; }
+.syllabus-header h1 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; margin-bottom: 12px; }
+.syllabus-header h1 span { color: #E8520A; }
+.syllabus-header p { color: #8A7D6B; font-size: 17px; margin-bottom: 32px; }
+.syllabus-stats { display: flex; gap: 40px; flex-wrap: wrap; }
+.syl-stat { display: flex; flex-direction: column; gap: 4px; }
+.syl-stat-num { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 700; color: #F7C948; }
+.syl-stat-label { font-size: 13px; color: #8A7D6B; }
+
+/* PROGRESS BAR */
+.progress-section { padding: 40px 64px; background: #0C0A08; border-bottom: 1px solid #2A2218; }
+.progress-bar-wrapper { display: flex; align-items: center; gap: 16px; }
+.progress-label { font-size: 14px; color: #8A7D6B; white-space: nowrap; }
+.progress-bar-bg { flex: 1; background: #1A1612; border-radius: 100px; height: 8px; }
+.progress-bar-fill { background: linear-gradient(90deg, #E8520A, #F7C948); height: 8px; border-radius: 100px; transition: width 1s ease; width: 0; }
+.progress-percent { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: #F7C948; white-space: nowrap; }
+
+/* TIMELINE */
+.timeline-section { padding: 64px; }
+.timeline { position: relative; padding-left: 60px; }
+.timeline::before { content: ''; position: absolute; left: 19px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #E8520A 0%, #E8520A 40%, #F7C948 40%, #F7C948 60%, #2A2218 60%); border-radius: 2px; }
+.timeline-item { position: relative; margin-bottom: 32px; }
+.timeline-circle { position: absolute; left: -51px; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: #FAF6EF; z-index: 1; }
+.circle-completed { background: #E8520A; box-shadow: 0 0 0 4px #E8520A22; }
+.circle-inprogress { background: #F7C948; box-shadow: 0 0 0 4px #F7C94822; color: #0C0A08; }
+.circle-locked { background: #1A1612; border: 2px solid #2A2218; color: #8A7D6B; }
+.timeline-card { background: #1A1612; border-radius: 12px; padding: 20px 24px; border: 1px solid #2A2218; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.2s; cursor: pointer; }
+.timeline-card:hover { border-color: #E8520A44; }
+.timeline-card.completed { border-left: 3px solid #E8520A; }
+.timeline-card.inprogress { border-left: 3px solid #F7C948; }
+.timeline-card.locked { opacity: 0.6; cursor: not-allowed; }
+.timeline-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.timeline-meta { color: #8A7D6B; font-size: 13px; }
+.status-badge { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.badge-completed { background: #E8520A22; color: #E8520A; border: 1px solid #E8520A44; }
+.badge-inprogress { background: #F7C94822; color: #F7C948; border: 1px solid #F7C94844; }
+.badge-locked { background: #2A221844; color: #8A7D6B; border: 1px solid #2A2218; }
+
+/* SHOW/HIDE SYLLABUS */
+.toggle-section { padding: 0 64px 32px; }
+.toggle-btn { background: #1A1612; color: #FAF6EF; border: 1px solid #2A2218; padding: 14px 28px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+.toggle-btn:hover { border-color: #E8520A; color: #E8520A; }
+.hidden-syllabus { display: none; margin-top: 24px; }
+.hidden-syllabus.visible { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);} }
+.extra-modules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.extra-module { background: #1A1612; border-radius: 10px; padding: 18px 20px; border: 1px solid #2A2218; display: flex; gap: 12px; align-items: center; }
+.module-num { width: 32px; height: 32px; background: #E8520A22; color: #E8520A; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+.module-info { flex: 1; }
+.module-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.module-lessons { font-size: 12px; color: #8A7D6B; }
+
+/* ENROLL CTA */
+.enroll-cta { padding: 64px; background: #1A1612; border-top: 1px solid #2A2218; text-align: center; }
+.enroll-cta h2 { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 700; margin-bottom: 12px; }
+.enroll-cta p { color: #8A7D6B; font-size: 16px; margin-bottom: 32px; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">AgentForge</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="course-details.html">Course Details</a></li>
+    <li><a href="syllabus.html" class="active">Syllabus</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="course-details.html" class="btn-nav">Enroll Now</a>
+</nav>
+
+<!-- HEADER -->
+<div class="syllabus-header">
+  <h1>Course <span>Syllabus</span></h1>
+  <p>A structured 12-week journey from AI fundamentals to production-ready agentic systems.</p>
+  <div class="syllabus-stats">
+    <div class="syl-stat"><span class="syl-stat-num">12</span><span class="syl-stat-label">Modules</span></div>
+    <div class="syl-stat"><span class="syl-stat-num">48</span><span class="syl-stat-label">Lessons</span></div>
+    <div class="syl-stat"><span class="syl-stat-num">12</span><span class="syl-stat-label">Projects</span></div>
+    <div class="syl-stat"><span class="syl-stat-num">40+</span><span class="syl-stat-label">Hours of Content</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-section">
+  <div style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-family:'Syne',sans-serif;font-size:16px;font-weight:600;">Your Progress</span>
+    <span style="font-size:13px;color:#8A7D6B;">2 of 5 modules completed</span>
+  </div>
+  <div class="progress-bar-wrapper">
+    <span class="progress-label">0%</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <span class="progress-percent" id="progressPercent">40%</span>
+  </div>
+</div>
+
+<!-- TIMELINE MODULES -->
+<section class="timeline-section">
+  <div class="section-title">Module Roadmap</div>
+  <div class="section-sub">Your learning journey — step by step</div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-circle circle-completed">1</div>
+      <div class="timeline-card completed" onclick="showModuleInfo('Foundations of Agentic AI', 'completed')">
+        <div>
+          <div class="timeline-title">Foundations of Agentic AI</div>
+          <div class="timeline-meta">4 Lessons · 1.5 hrs · Intro Project</div>
+        </div>
+        <span class="status-badge badge-completed">✅ Completed</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-circle circle-completed">2</div>
+      <div class="timeline-card completed" onclick="showModuleInfo('Prompt Engineering Mastery', 'completed')">
+        <div>
+          <div class="timeline-title">Prompt Engineering Mastery</div>
+          <div class="timeline-meta">5 Lessons · 2 hrs · Chain-of-Thought Project</div>
+        </div>
+        <span class="status-badge badge-completed">✅ Completed</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-circle circle-inprogress">3</div>
+      <div class="timeline-card inprogress" onclick="showModuleInfo('Tool Use & API Integration', 'inprogress')">
+        <div>
+          <div class="timeline-title">Tool Use & API Integration</div>
+          <div class="timeline-meta">4 Lessons · 2 hrs · API Agent Project</div>
+        </div>
+        <span class="status-badge badge-inprogress">🔵 In Progress</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-circle circle-locked">4</div>
+      <div class="timeline-card locked" onclick="showLockedMessage()">
+        <div>
+          <div class="timeline-title">Memory Systems</div>
+          <div class="timeline-meta">4 Lessons · 2 hrs · RAG Project</div>
+        </div>
+        <span class="status-badge badge-locked">🔒 Locked</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-circle circle-locked">5</div>
+      <div class="timeline-card locked" onclick="showLockedMessage()">
+        <div>
+          <div class="timeline-title">Deployment & Production</div>
+          <div class="timeline-meta">5 Lessons · 2.5 hrs · Deploy Project</div>
+        </div>
+        <span class="status-badge badge-locked">🔒 Locked</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOW/HIDE EXTRA MODULES -->
+<section class="toggle-section">
+  <button class="toggle-btn" id="toggleBtn" onclick="toggleSyllabus()">
+    <span id="toggleBtnText">Show All 12 Modules</span>
+    <span id="toggleArrow">↓</span>
+  </button>
+  <div class="hidden-syllabus" id="hiddenSyllabus">
+    <div class="extra-modules">
+      <div class="extra-module"><div class="module-num">6</div><div class="module-info"><div class="module-title">Multi-Agent Systems</div><div class="module-lessons">4 Lessons · 2 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+      <div class="extra-module"><div class="module-num">7</div><div class="module-info"><div class="module-title">Agent Evaluation</div><div class="module-lessons">3 Lessons · 1.5 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+      <div class="extra-module"><div class="module-num">8</div><div class="module-info"><div class="module-title">LangGraph Deep Dive</div><div class="module-lessons">5 Lessons · 2.5 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+      <div class="extra-module"><div class="module-num">9</div><div class="module-info"><div class="module-title">AutoGen & CrewAI</div><div class="module-lessons">4 Lessons · 2 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+      <div class="extra-module"><div class="module-num">10</div><div class="module-info"><div class="module-title">Voice & Multimodal Agents</div><div class="module-lessons">4 Lessons · 2 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+      <div class="extra-module"><div class="module-num">11</div><div class="module-info"><div class="module-title">Security & Ethics</div><div class="module-lessons">3 Lessons · 1.5 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+      <div class="extra-module"><div class="module-num">12</div><div class="module-info"><div class="module-title">Capstone Project</div><div class="module-lessons">5 Lessons · 3 hrs</div></div><span class="status-badge badge-locked">🔒</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENROLL CTA -->
+<div class="enroll-cta">
+  <h2>Ready to Start Your Journey?</h2>
+  <p>Join 1,200+ students already building the future with Agentic AI</p>
+  <div class="cta-buttons">
+    <a href="course-details.html" class="btn-primary">Enroll Now — ₹4,999 →</a>
+    <a href="contact.html" class="btn-outline">Have Questions?</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">AgentForge</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="course-details.html">Courses</a>
+    <a href="syllabus.html">Syllabus</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-text">© 2026 AgentForge. All rights reserved.</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.className = 'toast', 3500);
+}
+
+// Animate progress bar on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('progressFill').style.width = '40%';
+  }, 300);
+});
+
+function showModuleInfo(title, status) {
+  if (status === 'completed') showToast('✅ ' + title + ' — Completed! Great work!');
+  else if (status === 'inprogress') showToast('🔵 ' + title + ' — Currently in progress. Keep going!');
+}
+
+function showLockedMessage() {
+  showToast('🔒 Complete previous modules to unlock this one!', 'error');
+}
+
+let syllabusVisible = false;
+function toggleSyllabus() {
+  syllabusVisible = !syllabusVisible;
+  document.getElementById('hiddenSyllabus').classList.toggle('visible', syllabusVisible);
+  document.getElementById('toggleBtnText').textContent = syllabusVisible ? 'Hide Modules' : 'Show All 12 Modules';
+  document.getElementById('toggleArrow').textContent = syllabusVisible ? '↑' : '↓';
+}
+</script>
+</body>
+</html>
